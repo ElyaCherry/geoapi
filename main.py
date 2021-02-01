@@ -1,8 +1,11 @@
 import tkinter as tk
+from tkinter import ttk, StringVar
 from PIL import ImageTk, Image
 import requests
 
 KEY = "175513c9-027e-4035-be37-e494d2b40a58"
+LANGUAGES = ["ru_RU", "ru_UA", "uk_UA", "en_US", "en_RU", "tr_TR"]
+TYPES = {"Карта": "map", "Спутник": "sat", "Смешанный": "sat,skl"}
 
 
 class GeoWindow:
@@ -31,25 +34,45 @@ class GeoWindow:
                                            command=self.get_coords_by_address)
         self.button_send_input.pack(side="left", fill="y")
 
-        self.frame_zoom = tk.LabelFrame(self.master, text="zoom")
-        self.frame_zoom.pack(side="left")
+        self.frame_zoom = tk.LabelFrame(self.master, text="Zoom")
         self.button_zoom_out = tk.Button(self.frame_zoom, height=1, text="-", command=self.zoom_out)
         self.button_zoom_out.pack(side="left")
         self.button_zoom_in = tk.Button(self.frame_zoom, height=1, text="+", command=self.zoom_in)
         self.button_zoom_in.pack(side="left")
+        self.frame_zoom.pack(side="left")
+
+        # self.languages = {"Русский, Россия": "ru_RU", "Украинский, Украина": "uk_UA", "Русский, Украина": "ru_UA",
+        #                   "Английский"}
+        self.frame_language = tk.LabelFrame(self.master, text="Language select")
+        self.language = StringVar()
+        self.language_choice = ttk.Combobox(self.frame_language, values=LANGUAGES, textvariable=self.language)
+        self.language_choice.current(0)
+        self.language_choice.bind("<<ComboboxSelected>>", self.get_coords_by_address)
+        self.language_choice.pack(side="left")
+        self.frame_language.pack(side="left")
+
+        self.frame_type = tk.LabelFrame(self.master, text="Type select")
+        self.map_type_name = StringVar()
+        self.map_type = StringVar()
+        self.type_choice = ttk.Combobox(self.frame_type, values=list(TYPES.keys()), textvariable=self.map_type_name)
+        self.type_choice.current(0)
+        self.map_type.set(TYPES[self.map_type_name.get()])
+        self.type_choice.bind("<<ComboboxSelected>>", self.change_type)
+        self.type_choice.pack(side="left")
+        self.frame_type.pack(side="left")
 
         self.frame.pack()
 
         # map args:
         self.map_zoom = "16"  # 0-17
-        self.map_type = "map"  # "sat", "sat,skl"
 
     def get_coords_by_address(self, *args):
         self.json_url = "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=" + KEY + \
                         "&geocode=" + str(self.address.get("0.0", 'end'))
         self.json_data = requests.get(self.json_url).json()
         try:
-            self.coords = self.json_data["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]["Point"]["pos"]
+            self.coords = self.json_data["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"][
+                                         "Point"]["pos"]
             self.coords = self.coords.split()  # [str, str]
             self.get_map_by_coords()
         except IndexError:
@@ -59,7 +82,7 @@ class GeoWindow:
         try:
             self.map_url = "https://static-maps.yandex.ru/1.x/?ll=" + self.coords[0] + "," + self.coords[1] + \
                            "&size=450,450&pt=" + self.coords[0] + "," + self.coords[1] + "," + "pmwtm1" + \
-                           "&z=" + self.map_zoom + "&l=" + self.map_type
+                           "&z=" + self.map_zoom + "&l=" + self.map_type.get() + "&lang=" + self.language.get()
 
             self.response = requests.get(self.map_url)
             self.map_data = self.response.content
@@ -77,6 +100,10 @@ class GeoWindow:
 
     def zoom_out(self):
         self.map_zoom = str(max(0, int(self.map_zoom) - 1))
+        self.get_map_by_coords()
+
+    def change_type(self, *args):
+        self.map_type.set(TYPES[self.map_type_name.get()])
         self.get_map_by_coords()
 
 
