@@ -136,7 +136,8 @@ class GeoWindow:
             self.weather_condition["temp"] = self.json_weather["fact"]["temp"]
             self.weather_condition["icon"] = self.json_weather["fact"]["icon"]
             self.weather_condition["condition"] = self.json_weather["fact"]["condition"]
-            self.weather_label.config(text="Weather: " + str(self.weather_condition["temp"]) + "°С")
+            self.weather_label.config(text="Weather: " + str(self.weather_condition["temp"]) + "°С, " \
+                                           + self.weather_condition["condition"].replace('-', ' '))
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
