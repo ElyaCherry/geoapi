@@ -97,7 +97,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout):
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -109,7 +109,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout):
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -124,7 +124,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout):
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -140,7 +140,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout):
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
