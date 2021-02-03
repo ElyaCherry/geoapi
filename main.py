@@ -91,13 +91,13 @@ class GeoWindow:
             self.json_data = requests.get(self.json_url).json()
             self.coords = self.json_data["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"][
                                          "Point"]["pos"]
-            self.coords = self.coords.split()  # [str, str]
+            self.coords = self.coords.split()  # (str, str)
             self.get_map_url()
             self.get_map_by_coords()
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:  # doesn't work as intended
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -109,7 +109,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:  # doesn't work as intended
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -124,7 +124,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:  # doesn't work as intended
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
@@ -140,7 +140,7 @@ class GeoWindow:
         except IndexError:
             pass
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
-                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:  # doesn't work as intended
+                requests.exceptions.TooManyRedirects, requests.exceptions.Timeout) as e:
             self.map = ImageTk.PhotoImage(Image.open("no_connection.jpeg").resize((450, 450), Image.ANTIALIAS))
             self.panel.config(image=self.map)
 
